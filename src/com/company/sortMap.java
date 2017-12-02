@@ -28,8 +28,9 @@ public class sortMap{
                 //value= encode(value,"UTF-8");
              prestr = prestr + key + value;
         }
-        //两头拼接secre字段
-        return secret+prestr+secret;
+        //两头拼接secre字段并加密
+        System.out.println(secret+prestr+secret);
+        return md5Test.MD5(secret+prestr+secret);
     }
 
     //设置时间戳
@@ -38,33 +39,39 @@ public class sortMap{
         String timestamp = sp.toString();
         return timestamp;
     }
-
+    //设置map存放参数
+    Map<String,String> map= new HashMap<String,String>();
     //设置加密参数
-    public String setParam()
+    public Map<String,String> setParam()
     {
-        Map<String,String> map= new HashMap<String,String>();
         map.put("apiName", "trade.order.get");
         map.put("appKey", "SP");
         map.put("format", "json");
-        map.put("id", "2110021504012865041");
         map.put("session", "SP_TEST");
         map.put("timestamp", setTimestamp());
         map.put("v", "1.0.0");
         map.put("session", "123456");
-        //打印请求参数系列
-        //System.out.println(createLinkStringByGet(map));
-        //打印加密后的字符串
-        System.out.println(sortMap.getSign(map));
+        setbizParm("id","1232321");
+        return map;
 
-        return createLinkStringByGet(map);
     }
 
+    //设置业务参数
+    public void setbizParm(String key,String value)
+    {
+        map.put(key,value);
+    }
 
     //MD5加密
     public static String getSign(Map<String,String> map)
     {
         System.out.println(createLinkStringByGet(map));
         return  md5Test.MD5(createLinkStringByGet(map));
+    }
+    public static void main(String args[]){
+          sortMap sp=new sortMap();
+          String result=sortMap.createLinkStringByGet(sp.setParam());
+          System.out.println(result);
     }
 
 }
