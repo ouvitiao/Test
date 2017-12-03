@@ -11,6 +11,7 @@ public class sortMap{
     {
         //定义一个拼接的字符串
         String prestr="";
+        //密钥
         String secret="SP-INNER";
         //取出parm所有的key
         List<String> keys=new ArrayList<String>(param.keySet());
@@ -44,32 +45,35 @@ public class sortMap{
     //设置加密参数
     public Map<String,String> setParam()
     {
-        map.put("apiName", "trade.order.get");
+        map.put("apiName", "service.lottery.activity.result.get");
         map.put("appKey", "SP");
         map.put("format", "json");
         map.put("session", "SP_TEST");
         map.put("timestamp", setTimestamp());
         map.put("v", "1.0.0");
-        map.put("session", "123456");
-        setbizParm("id","1232321");
-        return map;
+        //加入业务参数
+        map.putAll(setbizParm());
 
+        return map;
     }
 
     //设置业务参数
-    public void setbizParm(String key,String value)
+    public Map<String,String> setbizParm()
     {
-        map.put(key,value);
+        Map<String,String> bizmap= new HashMap<String,String>();
+        bizmap.put("activityId","1711300903088615260");
+        return bizmap;
     }
 
     //MD5加密
-    public static String getSign(Map<String,String> map)
-    {
-        System.out.println(createLinkStringByGet(map));
-        return  md5Test.MD5(createLinkStringByGet(map));
-    }
+//    public static String getSign(Map<String,String> map)
+//    {
+//        System.out.println(createLinkStringByGet(map));
+//        return  md5Test.MD5(createLinkStringByGet(map));
+//    }
     public static void main(String args[]){
           sortMap sp=new sortMap();
+          System.out.println("Timestamp:"+sp.setTimestamp());
           String result=sortMap.createLinkStringByGet(sp.setParam());
           System.out.println(result);
     }
